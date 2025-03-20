@@ -1,5 +1,7 @@
 # ODONTOPREV: Detecção de Fraudes em Transações Móveis
 
+## Link do Dataset: https://drive.google.com/file/d/1aN1x_qj26bwym-y--4i42W5Jigb30GbO/view?usp=drive_link
+
 ## Apresentação do Protótipo Funcional e Análise da Arquitetura de IA
 
 Este projeto visa a detecção de fraudes em transações financeiras móveis por meio de algoritmos de Machine Learning. O modelo identifica padrões anômalos e classifica transações suspeitas com base no comportamento histórico dos dados.

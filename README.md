@@ -75,3 +75,5 @@ Os resultados foram avaliados utilizando:
 - **Gráficos de Comparacão** de métricas (Precisão, Recall e F1-Score).
 - **Distribuição das Fraudes no Dataset** para entender a proporção de transações fraudulentas.
 
+## Integrantes - Alissa RM553954 | Melissa RM552535 | Nicolas RM554145
+

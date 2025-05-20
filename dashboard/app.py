@@ -1,64 +1,82 @@
 import streamlit as st
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
 import joblib
+import os
+import matplotlib.pyplot as plt
 
-st.title("🔍 Detecção de Fraudes - OdontoPrev IOT")
+# Caminho absoluto para o modelo (relativo ao app.py)
+modelo_path = os.path.join(os.path.dirname(__file__), "modelo_fraude.pkl")
 
-# Carregar dados e modelo
-df = pd.read_csv("../PS_20174392719_1491204439457_log.csv")
-model = joblib.load("../modelo_fraude.pkl")
+# Verifica se o modelo existe
+if not os.path.exists(modelo_path):
+    st.error("Modelo não encontrado! Treine o modelo antes de iniciar o dashboard.")
+    st.stop()
 
-# Limpar e preparar os dados para visualização
-df['type'] = df['type'].astype(str)
-df_viz = df[df['type'].isin(['TRANSFER', 'CASH_OUT'])].copy()
-df_viz['type'] = df_viz['type'].map({'TRANSFER': 1, 'CASH_OUT': 0})
+# Carrega o modelo
+model = joblib.load(modelo_path)
 
-# Visualizações
-st.subheader("📊 Gráficos de Análise")
-col1, col2 = st.columns(2)
+# Título do app
+st.title("💳 Detecção de Fraudes - OdontoPrev")
 
-with col1:
-    fig1, ax1 = plt.subplots()
-    sns.countplot(data=df, x='type', ax=ax1)
-    st.pyplot(fig1)
+# Inicializa o histórico na sessão
+if "historico" not in st.session_state:
+    st.session_state.historico = []
 
-with col2:
+# Formulário de entrada
+with st.form("form"):
+    tipo_transacao = st.selectbox("Tipo de transação", ['CASH_OUT', 'TRANSFER', 'PAYMENT', 'CASH_IN', 'DEBIT'])
+    tipo_code = ['CASH_OUT', 'TRANSFER', 'PAYMENT', 'CASH_IN', 'DEBIT'].index(tipo_transacao)
+    amount = st.number_input("Valor da transação", min_value=0.0, step=100.0)
+    oldbalanceOrg = st.number_input("Saldo original do remetente", min_value=0.0, step=100.0)
+    newbalanceOrig = st.number_input("Novo saldo do remetente", min_value=0.0, step=100.0)
+    oldbalanceDest = st.number_input("Saldo original do destinatário", min_value=0.0, step=100.0)
+    newbalanceDest = st.number_input("Novo saldo do destinatário", min_value=0.0, step=100.0)
+    submitted = st.form_submit_button("Verificar")
+
+# Quando o botão for clicado
+if submitted:
+    features = [[tipo_code, amount, oldbalanceOrg, newbalanceOrig, oldbalanceDest, newbalanceDest]]
+    prediction = model.predict(features)[0]
+    prob = model.predict_proba(features)[0][1]
+
+    # Exibe o resultado
+    if prediction == 1:
+        st.error(f"🚨 Fraude detectada! (Confiança: {prob:.2%})")
+    else:
+        st.success(f"✅ Transação legítima (Confiança: {1 - prob:.2%})")
+
+    # Exibe gráfico de barras com a probabilidade
+    st.subheader("🔍 Visualização da probabilidade de fraude")
+
+    fig, ax = plt.subplots()
+    ax.barh(["Fraude", "Legítima"], [prob, 1 - prob], color=["red", "green"])
+    ax.set_xlim(0, 1)
+    ax.set_xlabel("Probabilidade")
+    for i, v in enumerate([prob, 1 - prob]):
+        ax.text(v + 0.01, i, f"{v:.2%}", va="center")
+
+    st.pyplot(fig)
+
+    # Armazena no histórico
+    st.session_state.historico.append({
+        "Tipo": tipo_transacao,
+        "Valor": amount,
+        "Fraude": bool(prediction),
+        "Confiança": prob if prediction == 1 else 1 - prob
+    })
+
+# Exibe histórico se houver
+if st.session_state.historico:
+    st.subheader("📊 Histórico das Previsões")
+
+    df_hist = pd.DataFrame(st.session_state.historico)
+    st.dataframe(df_hist, use_container_width=True)
+
+    # Gráfico de contagem de fraudes vs legítimas
+    st.subheader("📉 Quantidade de Transações Fraudulentas vs Legítimas")
+
+    counts = df_hist["Fraude"].value_counts().rename({True: "Fraudes", False: "Legítimas"})
     fig2, ax2 = plt.subplots()
-    corr = df_viz[['type', 'amount', 'oldbalanceOrg', 'newbalanceOrig', 'oldbalanceDest', 'newbalanceDest', 'isFraud']].corr()
-    sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm", ax=ax2)
+    ax2.bar(counts.index, counts.values, color=["red", "green"])
+    ax2.set_ylabel("Quantidade")
     st.pyplot(fig2)
-
-# Previsão em tempo real
-st.subheader("🔮 Previsão em Tempo Real")
-
-with st.form("formulario_predicao"):
-    tipo_transacao = st.selectbox("Tipo de Transação", ['TRANSFER', 'CASH_OUT'])
-    valor = st.number_input("Valor da Transação", min_value=0.0)
-    saldo_antigo = st.number_input("Saldo Antes da Transação", min_value=0.0)
-    saldo_novo = st.number_input("Saldo Após a Transação", min_value=0.0)
-    saldo_destino_ant = st.number_input("Saldo do Destinatário Antes", min_value=0.0)
-    saldo_destino_novo = st.number_input("Saldo do Destinatário Após", min_value=0.0)
-
-    submit = st.form_submit_button("Verificar Fraude")
-
-    if submit:
-        tipo_cod = 0 if tipo_transacao == "CASH_OUT" else 1
-        entrada = [[
-            tipo_cod,
-            valor,
-            saldo_antigo,
-            saldo_novo,
-            saldo_destino_ant,
-            saldo_destino_novo
-        ]]
-
-        predicao = model.predict(entrada)[0]
-        prob = model.predict_proba(entrada)[0][1]
-
-        if predicao == 1:
-            st.error(f"🚨 FRAUDE DETECTADA com {prob:.2%} de confiança!")
-        else:
-            st.success(f"✅ Transação segura com {1 - prob:.2%} de confiança.")
-

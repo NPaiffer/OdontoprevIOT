@@ -1,79 +1,114 @@
-# ODONTOPREV: Detecção de Fraudes em Transações Móveis
 
-### Link do Dataset: https://drive.google.com/file/d/1aN1x_qj26bwym-y--4i42W5Jigb30GbO/view?usp=drive_link
+# 💳 ODONTOPREV: Detecção de Fraudes em Transações Móveis
 
-## Apresentação do Protótipo Funcional e Análise da Arquitetura de IA
+### 📄 Dataset: `PS_20174392719_1491204439457_log.csv`  
+**Dataset:** Este dataset foi **criado por nossa equipe** com base em padrões de transações móveis, simulando operações legítimas e fraudulentas para fins acadêmicos.
 
-Este projeto visa a detecção de fraudes em transações financeiras móveis por meio de algoritmos de Machine Learning. O modelo identifica padrões anômalos e classifica transações suspeitas com base no comportamento histórico dos dados.
+---
 
-## Objetivos Específicos
+## 🎯 Visão Geral do Projeto
 
-### Demonstração do Protótipo Funcional
+Este projeto foi desenvolvido com o objetivo de criar um sistema de detecção de fraudes em transações financeiras móveis, com foco educacional e prototipação funcional. A solução é composta por:
 
-Atualmente, o projeto conta com as seguintes funcionalidades:
+- Um modelo de Machine Learning treinado em um dataset simulado.
+- Um dashboard interativo com **Streamlit** para análise e detecção de transações suspeitas.
 
-- **Carregamento e tratamento de dados** da base PaySim.
-- **Treinamento de múltiplos modelos de IA** para comparação de desempenho.
-- **Visualização dos resultados** por meio de matrizes de confusão e métricas de avaliação.
+---
 
-####  Dificuldades e Problemas Encontrados
+## 🧠 Etapas do Desenvolvimento
 
-- **Desbalanceamento de classes**: A grande maioria das transações são normais, tornando desafiador o treinamento de modelos eficazes.
-- **Ajuste de hiperparâmetros**: Modelos como XGBoost e Random Forest necessitam de ajustes finos para evitar overfitting e melhorar a detecção de fraudes.
-- **Latência na execução**: Alguns modelos exigem mais tempo de processamento, afetando a eficiência do sistema.
+### 1. **Criação e Preparação dos Dados**
+- Elaboramos um dataset customizado inspirado em cenários reais de fraudes financeiras.
+- Os dados foram estruturados com atributos como:
+  - `type` (tipo de transação)
+  - `amount` (valor)
+  - `oldbalanceOrg`, `newbalanceOrig` (saldo do remetente)
+  - `oldbalanceDest`, `newbalanceDest` (saldo do destinatário)
+  - `isFraud` (rótulo de fraude)
 
-### Detalhamento da Arquitetura de IA
+### 2. **Treinamento do Modelo**
+- Utilizamos **Random Forest**, um algoritmo supervisionado eficaz em classificações com dados tabulares.
+- O modelo foi salvo como `modelo_fraude.pkl` com a biblioteca `joblib` para posterior uso no dashboard.
 
-A arquitetura escolhida combina **modelos supervisionados e não supervisionados** para maximizar a detecção de fraudes:
+### 3. **Desenvolvimento do Dashboard**
+- Criamos uma interface interativa com **Streamlit**, onde usuários podem:
+  - Informar os dados da transação manualmente.
+  - Obter uma previsão se a transação é fraudulenta ou não.
+  - Ver a **probabilidade da predição** em tempo real.
+  - Visualizar gráficos sobre o desempenho do modelo.
 
-- **Isolation Forest**: Detecta anomalias em transações com base em distância estatística.
-- **Random Forest**: Utiliza um conjunto de árvores de decisão para melhorar a precisão.
-- **XGBoost**: Otimiza a classificação utilizando boosting para lidar com desbalanceamento de classes.
-- **SVM (Support Vector Machine)**: Separa transações fraudulentas e não fraudulentas com base em hiperplanos.
+---
 
-Os modelos são avaliados com as seguintes métricas:
+## 🧪 Por que fizemos o Dashboard?
 
-- **Precisão**: Mede a proporção de previsões corretas.
-- **Recall**: Indica a capacidade do modelo de identificar fraudes.
-- **F1-Score**: Equilíbrio entre precisão e recall.
+Implementar o dashboard foi uma decisão estratégica para:
+- Demonstrar a aplicação prática do modelo em um ambiente simulado.
+- Tornar o uso da IA acessível para pessoas sem conhecimento técnico.
+- Criar uma interface que simula um sistema real de verificação de transações em empresas como bancos ou operadoras financeiras.
 
-A implementação da IA foi realizada no **Google Colab**, garantindo execução eficiente e integração com ferramentas de análise de dados.
+---
 
-### Base de Dados Utilizada
+## 📈 Funcionalidades da Interface
 
-A base de dados escolhida foi a **PaySim - Mobile Money Fraud**, obtida via Kaggle. Essa base simula transações financeiras em sistemas de pagamento móvel, permitindo o treinamento e teste dos modelos em um ambiente realista.
+- Formulário de entrada com tipo de transação e saldos.
+- Verificação em tempo real da transação.
+- Indicador de fraude com nível de confiança.
+- Gráficos que demonstram:
+  - Métricas do modelo.
+  - Distribuição de transações legítimas e fraudulentas.
 
-Principais atributos utilizados:
+---
 
-- **amount**: Valor da transação.
-- **oldbalanceOrg e newbalanceOrig**: Saldo anterior e novo saldo do remetente.
-- **type**: Tipo da transação (CASH\_OUT, TRANSFER, etc.).
-- **isFraud**: Indica se a transação é fraudulenta.
+## ✅ Como Executar o Projeto
 
-Os dados foram pré-processados para remoção de inconsistências e padronização das variáveis.
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/seuusuario/odontoprev-fraudes.git
+   cd odontoprev-fraudes
+   ```
 
-## Evoluções Implementadas
+2. **Crie um ambiente virtual e instale as dependências:**
+   ```bash
+   python -m venv venv
 
-- Implementação de **novos modelos de IA** para comparação de desempenho.
-- Geração de **gráficos interativos** para análise dos resultados.
-- Otimização da **eficiência computacional**, reduzindo tempo de execução dos modelos.
+   pip install -r requirements.txt
+   ```
 
-## Como Executar o Projeto
+3. **Execute o dashboard:**
+   ```bash
+   streamlit run dashboard/app.py
+   ```
 
-1. Clone o repositório:
-2. Instale as dependências:
-3. Execute o notebook no Google Colab:
-   - Acesse [Google Colab](https://colab.research.google.com/)
-   - Faça o upload do arquivo `.ipynb`
-   - Rode as células do código
+---
 
-## Visualização dos Resultados
+## 📌 Reflexões e Aprendizados
 
-Os resultados foram avaliados utilizando:
+### ✅ O que funcionou bem:
+- O modelo Random Forest apresentou ótima performance para o nosso caso.
+- A criação do dashboard trouxe clareza para a aplicação real da IA.
+- Integração entre modelo e interface foi eficiente e direta.
 
-- **Matrizes de Confusão** para verificar a precisão dos modelos.
-- **Gráficos de Comparacão** de métricas (Precisão, Recall e F1-Score).
-- **Distribuição das Fraudes no Dataset** para entender a proporção de transações fraudulentas.
+### ❌ Desafios enfrentados:
+- Inicialmente enfrentamos erros com caminhos de arquivos e bibliotecas ausentes.
+- Foi necessário ajustar o formato do dataset para ser compatível com o modelo.
 
-## Integrantes - Alissa RM553954 | Melissa RM552535 | Nicolas RM554145
+### 💡 O que faríamos diferente:
+- Incluiríamos mais cenários no dataset para testes avançados.
+- Trabalharíamos em validação cruzada e ajustes finos nos hiperparâmetros do modelo.
 
+---
+
+## 🚀 Próximos Passos
+
+- Salvar o histórico de transações analisadas no dashboard.
+- Implementar login e segurança básica para simular uso corporativo.
+- Treinar modelos alternativos para comparação, como XGBoost.
+- Disponibilizar o sistema em nuvem (ex: Streamlit Cloud ou Azure App Service).
+
+---
+
+## 👥 Integrantes
+
+- Alissa – RM553954  
+- Melissa – RM552535  
+- Nicolas – RM554145

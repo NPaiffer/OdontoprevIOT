@@ -1,12 +1,12 @@
 
 # 💳 ODONTOPREV: Detecção de Fraudes em Transações Móveis
 
-### 📄 Dataset: `PS_20174392719_1491204439457_log.csv`  
+### Dataset: `PS_20174392719_1491204439457_log.csv`  
 **Dataset:** Este dataset foi **criado por nossa equipe** com base em padrões de transações móveis, simulando operações legítimas e fraudulentas para fins acadêmicos.
 
 ---
 
-## 🎯 Visão Geral do Projeto
+## Visão Geral do Projeto
 
 Este projeto foi desenvolvido com o objetivo de criar um sistema de detecção de fraudes em transações financeiras móveis, com foco educacional e prototipação funcional. A solução é composta por:
 
@@ -15,7 +15,7 @@ Este projeto foi desenvolvido com o objetivo de criar um sistema de detecção d
 
 ---
 
-## 🧠 Etapas do Desenvolvimento
+## Etapas do Desenvolvimento
 
 ### 1. **Criação e Preparação dos Dados**
 - Elaboramos um dataset customizado inspirado em cenários reais de fraudes financeiras.
@@ -39,7 +39,7 @@ Este projeto foi desenvolvido com o objetivo de criar um sistema de detecção d
 
 ---
 
-## 🧪 Por que fizemos o Dashboard?
+## Por que fizemos o Dashboard?
 
 Implementar o dashboard foi uma decisão estratégica para:
 - Demonstrar a aplicação prática do modelo em um ambiente simulado.
@@ -48,7 +48,7 @@ Implementar o dashboard foi uma decisão estratégica para:
 
 ---
 
-## 📈 Funcionalidades da Interface
+## Funcionalidades da Interface
 
 - Formulário de entrada com tipo de transação e saldos.
 - Verificação em tempo real da transação.
@@ -59,7 +59,7 @@ Implementar o dashboard foi uma decisão estratégica para:
 
 ---
 
-## ✅ Como Executar o Projeto
+## Como Executar o Projeto
 
 1. **Clone o repositório:**
    ```bash
@@ -81,24 +81,24 @@ Implementar o dashboard foi uma decisão estratégica para:
 
 ---
 
-## 📌 Reflexões e Aprendizados
+## Reflexões e Aprendizados
 
-### ✅ O que funcionou bem:
+### O que funcionou bem:
 - O modelo Random Forest apresentou ótima performance para o nosso caso.
 - A criação do dashboard trouxe clareza para a aplicação real da IA.
 - Integração entre modelo e interface foi eficiente e direta.
 
-### ❌ Desafios enfrentados:
+### Desafios enfrentados:
 - Inicialmente enfrentamos erros com caminhos de arquivos e bibliotecas ausentes.
 - Foi necessário ajustar o formato do dataset para ser compatível com o modelo.
 
-### 💡 O que faríamos diferente:
+### O que faríamos diferente:
 - Incluiríamos mais cenários no dataset para testes avançados.
 - Trabalharíamos em validação cruzada e ajustes finos nos hiperparâmetros do modelo.
 
 ---
 
-## 🚀 Próximos Passos
+## Próximos Passos
 
 - Salvar o histórico de transações analisadas no dashboard.
 - Implementar login e segurança básica para simular uso corporativo.
@@ -107,7 +107,7 @@ Implementar o dashboard foi uma decisão estratégica para:
 
 ---
 
-## 👥 Integrantes
+## Integrantes
 
 - Alissa – RM553954  
 - Melissa – RM552535  

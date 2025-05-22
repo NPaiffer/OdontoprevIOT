@@ -35,9 +35,21 @@ with st.form("form"):
 
 # Quando o botão for clicado
 if submitted:
-    features = [[tipo_code, amount, oldbalanceOrg, newbalanceOrig, oldbalanceDest, newbalanceDest]]
+    saldo_diferenca_org = oldbalanceOrg - newbalanceOrig - amount
+    saldo_diferenca_dest = newbalanceDest - oldbalanceDest
+    is_zero_balances = int(oldbalanceOrg == 0 and newbalanceOrig == 0 and oldbalanceDest == 0 and newbalanceDest == 0)
+
+    features = [[
+        tipo_code, amount, oldbalanceOrg, newbalanceOrig,
+        oldbalanceDest, newbalanceDest,
+        saldo_diferenca_org, saldo_diferenca_dest, is_zero_balances
+    ]]
     prediction = model.predict(features)[0]
-    prob = model.predict_proba(features)[0][1]
+    probas = model.predict_proba(features)
+    if probas.shape[1] > 1:
+        prob = probas[0][1]
+    else:
+        prob = 0.0
 
     # Exibe o resultado
     if prediction == 1:

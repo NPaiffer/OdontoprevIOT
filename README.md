@@ -1,6 +1,8 @@
 
 # 💳 ODONTOPREV: Detecção de Fraudes em Transações Móveis
 
+### Repositório: https://github.com/NPaiffer/OdontoprevIOT
+
 ### Dataset: `PS_20174392719_1491204439457_log.csv`  
 **Dataset:** Este dataset foi **criado por nossa equipe** com base em padrões de transações móveis, simulando operações legítimas e fraudulentas para fins acadêmicos.
 
@@ -63,7 +65,7 @@ Implementar o dashboard foi uma decisão estratégica para:
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/seuusuario/odontoprev-fraudes.git
+   git clone https://github.com/seuusuario/OdontoprevIOT.git
    cd odontoprev-fraudes
    ```
 
